@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
 
@@ -62,18 +63,29 @@ public class Controller {
 
     private Window window;
 
+    String calFilePath;
+    String zerFilePath;
+    String meaFilePath;
 
-    private CalibrationSampleList calibrationSampleList;
-    private MeasurementSampleList measurementSampleList;
-    private ZerolineSampleList zerolineSampleList;
-    DataFromFiles dff = new DataFromFiles(calibrationSampleList, measurementSampleList, zerolineSampleList);
+
+    private SampleList calibrationSampleList;
+    private SampleList measurementSampleList;
+    private SampleList zerolineSampleList;
+    DataFromFiles dff;
 
     public void initialize(Window window) {
         this.window = window;
         add1.setOnAction(event -> openFirstFileDialog());
         add2.setOnAction(event -> openSecondFileDialog());
         add3.setOnAction(event -> openThirdFileDialog());
-        upload.setOnAction(event -> getTextFromTextfields());
+        upload.setOnAction(event -> {
+            try {
+                getTextFromTextfields();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("coś się zepsuło");
+            }
+        });
 
     }
 
@@ -82,6 +94,8 @@ public class Controller {
         File file = fileChooser.showOpenDialog(window);
         if(file != null) {
             textField1.setText(file.getAbsolutePath());
+            zerFilePath = file.getAbsolutePath();
+
         }
     }
     private void openSecondFileDialog() {
@@ -89,6 +103,7 @@ public class Controller {
         File file = fileChooser.showOpenDialog(window);
         if(file != null) {
             textField2.setText(file.getAbsolutePath());
+            calFilePath = file.getAbsolutePath();
         }
     }
     private void openThirdFileDialog() {
@@ -96,10 +111,11 @@ public class Controller {
         File file = fileChooser.showOpenDialog(window);
         if(file != null) {
             textField3.setText(file.getAbsolutePath());
+            meaFilePath = file.getAbsolutePath();
         }
     }
 
-    private void getTextFromTextfields(){
+    private void getTextFromTextfields() throws IOException {
         double param1 = Double.parseDouble(fiisostzero.getText());
         double param2 = Double.parseDouble(fiisoendzero.getText());
         double param3 = Double.parseDouble(fiisosts.getText());
@@ -115,6 +131,14 @@ public class Controller {
 
         ProcessedSample ps = new ProcessedSample();
         KFunction kf = new KFunction();
+        ReadFile rfzero = new ReadFile(zerFilePath);
+        ReadFile rfmea = new ReadFile(meaFilePath);
+        ReadFile rfcal = new ReadFile(calFilePath);
+        calibrationSampleList = rfcal.getSampleList();
+        zerolineSampleList = rfzero.getSampleList();
+        measurementSampleList = rfmea.getSampleList();
+        dff = new DataFromFiles(calibrationSampleList, measurementSampleList, zerolineSampleList);
+
         for(int i = 0; i<dff.getCalibrationSampleList().size()-1; i++) {
 
             ps = kf.process(dff.getCalibrationSampleList().getSample(i).getTemperature(),

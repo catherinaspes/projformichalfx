@@ -4,38 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataFromFiles {
-    CalibrationSampleList calibrationSampleList;
-    MeasurementSampleList measurementSampleList;
-    ZerolineSampleList zerolineSampleList;
+    SampleList calibrationSampleList;
+    SampleList measurementSampleList;
+    SampleList zerolineSampleList;
     List<ProcessedSample> processedSamples = new ArrayList<ProcessedSample>();
 
-    public DataFromFiles(CalibrationSampleList calibrationSampleList, MeasurementSampleList measurementSampleList, ZerolineSampleList zerolineSampleList) {
+    public DataFromFiles(SampleList calibrationSampleList, SampleList measurementSampleList, SampleList zerolineSampleList) {
         this.calibrationSampleList = calibrationSampleList;
         this.measurementSampleList = measurementSampleList;
         this.zerolineSampleList = zerolineSampleList;
     }
 
-    public void setCalibrationSampleList(CalibrationSampleList calibrationSampleList) {
+    public void setCalibrationSampleList(SampleList calibrationSampleList) {
         this.calibrationSampleList = calibrationSampleList;
     }
 
-    public void setMeasurementSampleList(MeasurementSampleList measurementSampleList) {
+    public void setMeasurementSampleList(SampleList measurementSampleList) {
         this.measurementSampleList = measurementSampleList;
     }
 
-    public void setZerolineSampleList(ZerolineSampleList zerolineSampleList) {
+    public void setZerolineSampleList(SampleList zerolineSampleList) {
         this.zerolineSampleList = zerolineSampleList;
     }
 
-    public CalibrationSampleList getCalibrationSampleList() {
+    public SampleList getCalibrationSampleList() {
         return calibrationSampleList;
     }
 
-    public MeasurementSampleList getMeasurementSampleList() {
+    public SampleList getMeasurementSampleList() {
         return measurementSampleList;
     }
 
-    public ZerolineSampleList getZerolineSampleList() {
+    public SampleList getZerolineSampleList() {
         return zerolineSampleList;
     }
 

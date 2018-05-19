@@ -5,9 +5,24 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ReadFile {
-    SampleList sampleList;
+    SampleList sampleList = new SampleList() {
+        @Override
+        public void addSample(Sample sample) {
 
-    public ReadFile(SampleList sampleList, String filePath) throws IOException {
+        }
+
+        @Override
+        public Sample getSample(int index) {
+            return null;
+        }
+
+        @Override
+        public int size() {
+            return 0;
+        }
+    };
+
+    public ReadFile(String filePath) throws IOException {
         readFile(filePath);
     }
 
@@ -42,4 +57,7 @@ public class ReadFile {
 
     }
 
+    public SampleList getSampleList() {
+        return sampleList;
+    }
 }
